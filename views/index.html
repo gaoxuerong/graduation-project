@@ -1,0 +1,168 @@
+<!--头部通用的代码-->
+<% include layout_header.html %>
+</div>
+</div>
+</nav>
+<div class="picture">
+    <div class="pic-a">
+        <img src="http://demo.cssmoban.com/cssthemes5/twts_189_Foodie/images/one.jpg" alt="">
+    </div>
+    <div class="pic-b">
+        <img src="http://demo.cssmoban.com/cssthemes5/twts_189_Foodie/images/seven.jpg" alt="">
+    </div>
+    <div class="pic-c">
+        <img src="http://demo.cssmoban.com/cssthemes5/twts_189_Foodie/images/two.jpg" alt="">
+    </div>
+</div>
+<!-- 电影分类展示 -->
+<div class="container">
+  <div class="row">
+     <div class="col-md-8">
+        <div class="main" id="main-wrap">
+            <% for(article  of articles){ %>
+            <div class="movie-box">
+                <a class="movie-box-ul" href="/view?contentid=<%= article.id %>">
+                    <div class="movie-name">题目：<span><%= article.title %></span></div>
+                    <div class="movie-name">创建时间：<span><%= new Date(article.addTime) %></span></div>
+                    <div class="movie-score">简介：<span><%= article.description %></span></div>
+                </a>
+            </div>
+            <% } %>
+        </div>
+     </div>
+     <div class="col-md-4">
+        <!--登录注册功能-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    注册/登录
+                </h3>
+            </div>
+            <div class="panel-body">
+                <!--模态框通用样式-->
+                <% include login_register_modal.html %>
+                <% if(userInfo._id){ %>
+                    <div class="nav navbar-nav navbar-right">
+                    <span class="loginname">
+                        <%= userInfo.username %></span>
+                    <% if(userInfo.isadmin){ %>
+                    <span>你好，Administrator</span><a href="\admin" class="manager-click">你可以点击这里进行管理呦</a>
+                    <% }else{ %>
+                    <span>欢迎登录</span>
+                    <% } %>
+                    <button class="btn btn-success"><a href="javascript:" id="loginoutBtn">退出</a></button>
+                    </div>
+                    <% }else{ %>
+                    <button type="button" class="btn btn-default navbar-btn" id="register" data-toggle="modal" data-target="#myModal">注册</button>
+                    <button type="button" class="btn btn-default navbar-btn" id="login" data-toggle="modal" data-target="#myModals">登录</button>
+                <% } %>
+            </div>
+        </div>
+        <!--搜索查询-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    搜索
+                </h3>
+            </div>
+            <div class="panel-body">
+                <form class="navbar-form navbar-left" role="search" method="post" action="/main/search" style="width:55%;">
+                    <div class="form-group" style="width:90%;">
+                    <input type="text" class="form-control contentname" placeholder="Search" name="contentname" style="width:100%;">
+                    </div>
+                    <button type="submit" class="btn btn-default" id="search-btn" data-toggle="modal" data-target="#tijiao">提交 </button>
+                </form>
+            </div>
+        </div>
+        <!--博客类别-->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+              <h3 class="panel-title">
+                博客分类
+              </h3>
+          </div>
+          <div class="panel-body">
+            <% for(var category of categories){ %>
+            <span class="movie-cayegory-item"><a href="/?category=<%=  category._id %>">
+                <%=  category.name %></a></span>
+            <% } %>
+          </div>
+        </div>
+        <!--友情链接-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                  友情链接
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="friend-link">
+                    <a href="http://www.cfad.tech">小康</a>
+                </div>
+                <div class="friend-link">
+                    <a href="http://blog.lixiangme.cc/wordpress/">李响</a>
+                </div>
+                <div class="friend-link">
+                    <a href="https://uweii.github.io/">吴伟</a>
+                </div>
+            </div>
+        </div>
+        <!--技能-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    技能
+                </h3>
+                </div>
+          <div class="panel-body tagBall">
+            <a class="tag" href="#">nodejs</a>
+            <a class="tag" href="#">react</a>
+            <a class="tag" href="#">vue</a>
+            <a class="tag" href="#">canvas</a>
+            <a class="tag" href="#">小程序</a>
+            <a class="tag" href="#">java</a>
+            <a class="tag" href="#">继承</a>
+            <a class="tag" href="#">es6</a>
+            <a class="tag" href="#">mobx</a>
+            <a class="tag" href="#">redux</a>
+            <a class="tag" href="#">vuex</a>
+            <a class="tag" href="#">vue-cli</a>
+            <a class="tag" href="#">react-router</a>
+          </div>
+        </div>
+     </div>      
+  </div>
+</div>
+<!-- 首页电影展示，8条数据一页 -->
+<div class="container">
+  <div class="row content-margin">
+    <div class="col-md-12 content-bg">
+      <br />
+      <ul class="pager">
+        <% if( page <=1){ %>
+        <li class="previous"><span>没有上一页了</span></li>
+        <% }else{ %>
+        <li class="previous"><a href=" /?page=<%= (page-1) %>">上一页</a></li>
+        <% } %>
+        <% if( pages>0){ %>
+        <li>
+          <%= page %>/
+          <%= pages %>
+        </li>
+        <% }else{ %>
+        <li>
+          <%= page %>/
+          <%= 1 %>
+        </li>
+        <% } %>
+        <% if( page >= pages){ %>
+        <li class="next"><span>没有下一页了</span></li>
+        <% }else{ %>
+        <li class="next"><a href="/?page=<%= (page+1) %>">下一页</a></li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</div>
+<!--尾部通用代码-->
+<% include layout_footer.html %>
